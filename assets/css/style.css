@@ -1,0 +1,44 @@
+/* Body */
+body{
+    background-image: url(https://www.ellitoral.com/images/2023/02/06/8Qhkv2Ven_1300x655__1.jpg);
+    background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
+    background-repeat: no-repeat; /* Evita la repetición de la imagen */
+    background-attachment: fixed;
+}
+
+
+/* MENU */
+.container-menu {
+    width: 400px;
+    margin-top: 20%;
+    background-color: rgba(144, 140, 112, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 55px;
+    padding-bottom: 10px;
+  }
+  
+  .container-menu button {
+    background-color: #ADAACB;
+    margin-bottom: 5px;
+  }
+  
+  .container-menu button:hover {
+    background-color: #E1D690;
+  }
+
+  /* Footer */
+  footer{
+    margin-top: 25vh;
+    color: #aeaec9;
+  }
+
+  footer button{
+    background-color:#E1D690;
+    border-radius: 7px;
+    border: none;
+    color: #100510;
+  }
+  
