@@ -29,11 +29,50 @@ body{
     background-color: #E1D690;
   }
 
+#menu{
+  margin-bottom: 40px;
+}
+
+/* Select Pj */
+.SelectPj{
+  background-color: rgba(72,75,109,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 100px;
+}
+
+.Pjs{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: Row;
+}
+
+.SelectPj button{
+  margin: 20px;
+  background-color: rgb(74, 85, 85);
+  color: aliceblue;
+}
+
+.SelectPj button img{
+  height: 300px;
+}
+
   /* Footer */
   footer{
     margin-top: 25vh;
     color: #aeaec9;
   }
+
+  .centrar-boton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px; /* Ajusta la altura según sea necesario */
+}
+
 
   footer button{
     background-color:#E1D690;
