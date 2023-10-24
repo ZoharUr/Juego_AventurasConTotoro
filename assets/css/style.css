@@ -1,13 +1,17 @@
 /* Body */
-body{
+
+body {
     background-image: url(https://www.ellitoral.com/images/2023/02/06/8Qhkv2Ven_1300x655__1.jpg);
-    background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
-    background-repeat: no-repeat; /* Evita la repetición de la imagen */
+    background-size: cover;
+    /* Ajusta la imagen para cubrir todo el fondo */
+    background-repeat: no-repeat;
+    /* Evita la repetición de la imagen */
     background-attachment: fixed;
 }
 
 
 /* MENU */
+
 .container-menu {
     width: 400px;
     margin-top: 20%;
@@ -18,65 +22,106 @@ body{
     flex-direction: column;
     border-radius: 55px;
     padding-bottom: 10px;
-  }
-  
-  .container-menu button {
+}
+
+.container-menu button {
     background-color: #ADAACB;
     margin-bottom: 5px;
-  }
-  
-  .container-menu button:hover {
-    background-color: #E1D690;
-  }
-
-#menu{
-  margin-bottom: 40px;
 }
+
+.container-menu button:hover {
+    background-color: #E1D690;
+}
+
+#menu {
+    margin-bottom: 40px;
+}
+
 
 /* Select Pj */
-.SelectPj{
-  background-color: rgba(72,75,109,0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  border-radius: 100px;
-}
 
-.Pjs{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: Row;
-}
-
-.SelectPj button{
-  margin: 20px;
-  background-color: rgb(74, 85, 85);
-  color: aliceblue;
-}
-
-.SelectPj button img{
-  height: 300px;
-}
-
-  /* Footer */
-  footer{
-    margin-top: 25vh;
-    color: #aeaec9;
-  }
-
-  .centrar-boton {
+.SelectPj {
+    background-color: rgba(72, 75, 109, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100px; /* Ajusta la altura según sea necesario */
-} 
+    flex-direction: column;
+    border-radius: 100px;
+}
 
-  footer button{
-    background-color:#E1D690;
+.Pjs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: Row;
+}
+
+.SelectPj button {
+    margin: 20px;
+    background-color: rgb(74, 85, 85);
+    color: aliceblue;
+}
+
+.SelectPj button img {
+    height: 300px;
+}
+
+
+/* Juego */
+
+#firstGame {
+    background-image: url(../images/primerEspacio.png);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    width: 889px;
+    height: 500px;
+    position: relative; /* Añade esta propiedad para permitir posicionamiento absoluto de hijos */
+}
+
+#distance {
+    display: none;
+    user-select: none;
+    color: antiquewhite;
+}
+
+#treasureImage {
+    position: absolute;
+    height: 35px;
+    width: 35px;
+    display: none;
+    left: 0; /* Ajusta la posición horizontal deseada (izquierda) */
+    top: 0;  /* Ajusta la posición vertical deseada (arriba) */
+}
+
+
+
+
+
+/* Footer */
+
+footer {
+    margin-top: 25vh;
+    color: #aeaec9;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.centrar-boton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    /* Ajusta la altura según sea necesario */
+}
+
+footer button {
+    background-color: #E1D690;
     border-radius: 7px;
     border: none;
     color: #100510;
-  }
-  
+}
