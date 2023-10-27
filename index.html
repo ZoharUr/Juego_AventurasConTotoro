@@ -1,68 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="./assets/css/normalize.css">
-    <link rel="stylesheet" href="./assets/css/style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./assets/css/normalize.css" />
+    <link rel="stylesheet" href="./assets/css/style.css" />
     <title>Aventuras con Totoro</title>
-</head>
+  </head>
 
-<body class="container-fluid">
-
+  <body class="container-fluid">
     <!-- MENU PRINCIPAL -->
     <div class="container-fluid container-menu" id="menu">
-        <h1>Aventuras con Totoro</h1>
-        <button type="button" class="btn btn-outline-secondary" id="btnJugar">Jugar</button>
-        <button type="button" class="btn btn-outline-secondary" id="btnPj">Seleccionar Personaje</button>
+      <h1>Aventuras con Totoro</h1>
+      <button type="button" class="btn btn-outline-secondary" id="btnJugar">
+        Jugar
+      </button>
+      <button type="button" class="btn btn-outline-secondary" id="btnPj">
+        Seleccionar Personaje
+      </button>
     </div>
 
     <!-- SELECCIONAR PERSONAJE -->
     <div class="container-fluid SelectPj" id="apartadoPj">
-        <div class="container-fluid Pjs">
+      <div class="container-fluid Pjs">
         <button type="button" id="btnPjChild" class="btn">
-            <img src="./assets/images/child.png" alt="Totoro">
+          <img src="./assets/images/child.png" alt="Totoro" />
         </button>
         <button type="button" id="btnPjTotoro" class="btn">
-          <img src="./assets/images/Totoro.png" alt="Totoro">
+          <img src="./assets/images/Totoro.png" alt="Totoro" />
         </button>
-        </div>
-        <button type="button" id="btnNonPj" class="btn btn-outline-secondary"> Cerrar Selector de Personaje</button>
+      </div>
+      <button type="button" id="btnNonPj" class="btn btn-outline-secondary">
+        Cerrar Selector de Personaje
+      </button>
     </div>
-    
+
     <!-- PRIMER JUEGO -->
-    <div class="container-fluid" id="firstGame" style="display: none;"> 
-        <h3 id="distance" style="display: none;">Debes buscar al Hollin Viajero!! (Haz click para comenzar)</h3>
-        <img id="treasureImage" src="./assets/images/HollinViajero.png" alt="Treasure">
+    <div class="container-fluid" id="firstGame" style="display: none">
+      <h3 id="distance" style="display: none">
+        Debes buscar al Hollin Viajero!! (Haz click para comenzar)
+      </h3>
+      <h6 id="clickCount">Clicks: 0</h6>
+      <h6 id="timeElapsed">Tiempo transcurrido: 0 segundos</h6>
+      <img
+        id="treasureImage"
+        src="./assets/images/HollinViajero.png"
+        alt="Treasure"
+      />
     </div>
-
-
 
     <!-- SEGUNDO JUEGO -->
-    <div class="container-fluid" id="secondGame" style="display: none; color: aliceblue;">
-        <h1>ACA VA EL SEGUNDO JUEGO</h1>
+    <div class="container-fluid" id="secondGame" style="display: none; color: aliceblue">
+      <div class="score"></div>
+      <div class="startScreen">
+        <h1>Juego Carrera Coches | Fuente Web</h1>
+        <p>Presione aquí para comenzar<br> Si chocas pierdes ...</p>
+      </div>
+      <div class="gameArea"></div>
     </div>
-
 
     <!-- FOOTER Y CREDITOS -->
     <footer class="container-fluid">
-        <div id="contenedorVideo" style="display: none;">
-            <iframe id="video" width="600" height="355" src="https://www.youtube.com/embed/FsUDoAgduBQ?si=uTFhaTazmb1q0wTL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-            <div class="centrar-boton">
-                <button id="btnCerrarVideo" type="button">Cerrar Créditos</button>
-            </div>
+      <div id="contenedorVideo" style="display: none">
+        <iframe
+          id="video"
+          width="600"
+          height="355"
+          src="https://www.youtube.com/embed/FsUDoAgduBQ?si=uTFhaTazmb1q0wTL"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+        ></iframe>
+        <div class="centrar-boton">
+          <button id="btnCerrarVideo" type="button">Cerrar Créditos</button>
         </div>
-        <p>&copy; 2023 Aventuras con Totoro | <button id="btnAbrirVideo" type="button">Ver Créditos</button></p>
+      </div>
+      <p>
+        &copy; 2023 Aventuras con Totoro |
+        <button id="btnAbrirVideo" type="button">Ver Créditos</button>
+      </p>
     </footer>
-    
 
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js " integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS " crossorigin="anonymous "></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js "
+      integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS "
+      crossorigin="anonymous "
+    ></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11 "></script>
     <script src="./assets/js/helpers.js"></script>
     <script src="./assets/js/main.js "></script>
-
-</body>
+  </body>
 </html>
