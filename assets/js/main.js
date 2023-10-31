@@ -483,6 +483,8 @@ function restartSecondGame() {
 /* Boton para mostrar los rankings del juego 1 y del juego 2 */
 document.getElementById("btnMostrarRankings").addEventListener("click", function() {
 
+    showRankings();
+
     rankingContainer.style.display = "flex"
     rankingContainer.style.alignContent = "center"
     rankingContainer.style.alignItems = "center"
@@ -494,8 +496,6 @@ document.getElementById("btnMostrarRankings").addEventListener("click", function
     contenedorVideo.style.display = "none";
     videoElement.src =
         "https://www.youtube.com/embed/FsUDoAgduBQ?si=uTFhaTazmb1q0wTL";
-
-    showRankings();
 });
 
 /* Establece la manera en que se van a ver los rankings de ambos juegos */
