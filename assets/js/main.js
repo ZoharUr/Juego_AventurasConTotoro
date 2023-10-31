@@ -14,20 +14,29 @@ let target = {
 };
 let $firstGame = document.querySelector("#firstGame");
 let $distance = document.querySelector("#distance");
-let clicks = 0;
+let clicks = -1;
 
 let timerInterval;
 let secondsElapsed = 0;
 const timeElapsedElement = document.getElementById("timeElapsed");
 
 const secondGame = document.getElementById("secondGame");
+const rankingContainer = document.getElementById("rankingContainer");
+
+const contenedorVideo = document.getElementById("contenedorVideo");
+const videoElement = document.querySelector("#video");
 
 document.getElementById("btnPj").addEventListener("click", function () {
+  restartSecondGame();
+  rankingContainer.style.display="none"
   apartadoPj.style.display = "flex";
   firstGame.style.display = "none";
   distance.style.display = "none";
   secondGame.style.display = "none";
-  clicks = 0;
+  contenedorVideo.style.display = "none";
+  videoElement.src =
+    "https://www.youtube.com/embed/FsUDoAgduBQ?si=uTFhaTazmb1q0wTL";
+  clicks = -1;
   target = {
     x: getRandomNumber(WIDTH),
     y: getRandomNumber(HEIGHT),
@@ -41,10 +50,15 @@ document.getElementById("btnPj").addEventListener("click", function () {
 });
 
 document.getElementById("btnNonPj").addEventListener("click", function () {
+  restartSecondGame();
   apartadoPj.style.display = "none";
   firstGame.style.display = "none";
   distance.style.display = "none";
   secondGame.style.display = "none";
+  rankingContainer.style.display="none"
+  contenedorVideo.style.display = "none";
+  videoElement.src =
+    "https://www.youtube.com/embed/FsUDoAgduBQ?si=uTFhaTazmb1q0wTL";
 
   treasureSound.currentTime = 0;
   treasureSound.pause();
@@ -90,37 +104,44 @@ document.getElementById("btnPjChild").addEventListener("click", function () {
   secondGame.style.display = "none";
 });
 
-const videoElement = document.querySelector("#video");
+
 const btnCerrarVideo = document.getElementById("btnCerrarVideo");
 document.getElementById("btnAbrirVideo").addEventListener("click", function () {
-  const contenedorVideo = document.getElementById("contenedorVideo");
   contenedorVideo.style.display = "block";
+  rankingContainer.style.display="none"
+  firstGame.style.display = "none";
+  secondGame.style.display = "none";
+  apartadoPj.style.display = "none";
 });
 
 btnCerrarVideo.addEventListener("click", function () {
   videoElement.src =
     "https://www.youtube.com/embed/FsUDoAgduBQ?si=uTFhaTazmb1q0wTL";
-  const contenedorVideo = document.getElementById("contenedorVideo");
+  
   contenedorVideo.style.display = "none";
+  rankingContainer.style.display="none"
 });
 
 const btnJugar = document.getElementById("btnJugar");
 
 btnJugar.addEventListener("click", function () {
+  restartSecondGame();
+  rankingContainer.style.display="none"
+  contenedorVideo.style.display = "none";
+  videoElement.src =
+    "https://www.youtube.com/embed/FsUDoAgduBQ?si=uTFhaTazmb1q0wTL";
   const personaje = sessionStorage.getItem("personaje");
   apartadoPj.style.display = "none";
   treasureSound.currentTime = 0;
   treasureSound.pause();
-  clicks = 0;
+  clicks = -1;
   target = {
     x: getRandomNumber(WIDTH),
     y: getRandomNumber(HEIGHT),
   };
   $distance.innerHTML =
     "Debes buscar al Hollin Viajero!! (Haz click para comenzar)";
-
     endGame()
-
   if (personaje === "Totoro") {
     firstGame.style.display = "none";
     distance.style.display = "none";
@@ -135,7 +156,7 @@ btnJugar.addEventListener("click", function () {
 /* GAME 1 */
 $firstGame.addEventListener("click", function (e) {
   let distance = getDistance(e, target);
-  if ((clicks == 0) & (distance > 20)) {
+  if ((clicks == -1) & (distance > 20)) {
     treasureSound.currentTime = 0;
     treasureSound.volume = 0.5;
     treasureSound.play();
@@ -145,7 +166,7 @@ $firstGame.addEventListener("click", function (e) {
 
   console.log("click");
   clicks++;
-  document.getElementById("clickCount").textContent = `Clicks: ${clicks}`;
+  document.getElementById("clickCount").textContent = `Clicks: ${clicks+1}`;
 
   let volume = getVolume(distance);
 
@@ -155,8 +176,14 @@ $firstGame.addEventListener("click", function (e) {
 
   $distance.innerHTML = `<h2>${distanceHint}</h2>`;
   if (distance < 20) {
+
+
     treasureSound.pause();
     Swal.fire(`Encontraste al Hollin Viajero en ${clicks} clicks!`);
+    
+    /* alert("clicks: " + clicks + "segundos: " + secondsElapsed) */
+
+    handleGame1Loss(clicks, secondsElapsed);
 
     const targetX = target.x;
     const targetY = target.y;
@@ -166,12 +193,16 @@ $firstGame.addEventListener("click", function (e) {
     treasureImage.style.left = targetX - 17 + "px";
     treasureImage.style.top = targetY - 17 + "px";
 
+    
+
     clearInterval(timerInterval);
     secondsElapsed = 0;
-    timeElapsedElement.textContent = `Tiempo transcurrido: ${secondsElapsed} segundos`; // Actualiza el elemento de tiempo
+    timeElapsedElement.textContent = `Tiempo transcurrido: ${secondsElapsed} segundos`; 
 
-    clicks = 0;
-    document.getElementById("clickCount").textContent = `Clicks: ${clicks}`;
+    clicks = -1;
+
+    
+    document.getElementById("clickCount").textContent = `Clicks: 0`;
 
     target = {
       x: getRandomNumber(WIDTH),
@@ -246,7 +277,6 @@ function moveLines(){
     })
 }
 function endGame(){
-    
     player.start=false;
     startScreen.classList.remove('hide');
     startScreen.innerHTML="<p>Presione aquí para comenzar<br> Si chocas pierdes ...</p> <br> Puntuación final:"+player.score;
@@ -259,6 +289,7 @@ function moveEnemy(car){
         if(isCollide(car,item)){
             console.log("Bang!");
             endGame();
+            handleGame2Loss()
         }
         if(item.y >=750){
             item.y=-300;
@@ -273,17 +304,11 @@ function gamePlay(){
     console.log("here we go");
     let car=document.querySelector('.car');
     let road=gameArea.getBoundingClientRect();
-    /*console.log(road);*/
     if(player.start){
         moveLines();
         moveEnemy(car);
 
-        if(keys.ArrowUp && player.y>(road.top+70)){
-            player.y-=player.speed
-        }
-        if(keys.ArrowDown && player.y<(road.bottom-85)){
-            player.y+=player.speed
-        }
+
         if(keys.ArrowLeft && player.x>0 ){
             player.x-=player.speed
         }
@@ -332,7 +357,6 @@ function start(){
         gameArea.appendChild(enemyCar);
     }
 
-
 }
 function randomColor(){
     function c(){
@@ -342,18 +366,14 @@ function randomColor(){
     return "#"+c()+c()+c();
 }
 
-// Deshabilitar el desplazamiento con la rueda del mouse en todo el documento
 function disableMouseWheel() {
   if (window.addEventListener) {
-      // Los navegadores modernos utilizan addEventListener
       window.addEventListener('wheel', preventDefault, { passive: false });
   } else {
-      // Navegadores antiguos utilizan attachEvent
       window.attachEvent('onmousewheel', preventDefault);
   }
 }
 
-// Restablecer el desplazamiento con la rueda del mouse
 function enableMouseWheel() {
   if (window.removeEventListener) {
       window.removeEventListener('wheel', preventDefault, { passive: false });
@@ -362,15 +382,149 @@ function enableMouseWheel() {
   }
 }
 
-// Función para prevenir el comportamiento predeterminado del desplazamiento
 function preventDefault(e) {
   e = e || window.event;
   if (e.preventDefault) e.preventDefault();
   e.returnValue = false;
 }
 
-// Deshabilitar el desplazamiento con la rueda del mouse
-//disableMouseWheel();
+function restartSecondGame() {
+  
+  player.start = false;
+  startScreen.classList.remove('hide');
+  startScreen.innerHTML = "<p>Presione aquí para comenzar<br> Si chocas pierdes ...</p>";
+  player.score = 0;
+  score.innerText = "Score: " + player.score; 
+  gameArea.innerHTML = "";
+  enableMouseWheel(); 
+}
 
-// Habilitar el desplazamiento con la rueda del mouse cuando lo desees
-// enableMouseWheel();
+document.getElementById("btnMostrarRankings").addEventListener("click", function() {
+ 
+  rankingContainer.style.display="flex"
+  rankingContainer.style.alignContent="center"
+  rankingContainer.style.alignItems="center"
+  rankingContainer.style.justifyContent="center"
+  rankingContainer.style.flexDirection="column"
+
+  firstGame.style.display = "none";
+  secondGame.style.display = "none";
+  apartadoPj.style.display = "none";
+  contenedorVideo.style.display = "none";
+  videoElement.src =
+    "https://www.youtube.com/embed/FsUDoAgduBQ?si=uTFhaTazmb1q0wTL";
+
+  showRankings();
+});
+
+function showRankings() {
+
+
+  let game1Ranking = JSON.parse(localStorage.getItem("game1Ranking")) || [];
+  let game2Ranking = JSON.parse(localStorage.getItem("game2Ranking")) || [];
+
+  game1Ranking = game1Ranking.sort((a, b) => {
+    if (a.clicks === b.clicks) {
+      return b.time - a.time; 
+    } else {
+      return a.clicks - b.clicks;
+    }
+  });
+
+  game2Ranking = game2Ranking.sort((a, b) => b.score - a.score); 
+
+  const game1HTML = generateRankingHTML(game1Ranking, "Game 1 Ranking");
+  const game2HTML = generateRankingHTML(game2Ranking, "Game 2 Ranking");
+
+  rankingContainer.innerHTML = game1HTML + game2HTML;
+
+  const btnCerrarRankings = document.getElementById("btnCerrarRankings");
+
+  if (!btnCerrarRankings) {
+    const newBtnCerrarRankings = document.createElement("button");
+    newBtnCerrarRankings.setAttribute("id", "btnCerrarRankings");
+    newBtnCerrarRankings.innerText = "Cerrar Rankings";
+    newBtnCerrarRankings.style.display = "flex";
+    newBtnCerrarRankings.setAttribute("class","btn btn-outline-secondary")
+    newBtnCerrarRankings.addEventListener("click", function() {
+      rankingContainer.innerHTML = ""; 
+      rankingContainer.style.display="none"
+      newBtnCerrarRankings.style.display = "none"; 
+    });
+    
+    rankingContainer.appendChild(newBtnCerrarRankings);
+  } else {
+    btnCerrarRankings.style.display = "flex";
+  }
+}
+
+
+
+function generateRankingHTML(ranking, title) {
+  let rankingHTML = `<h3>${title}</h3><ul>`;
+
+  if (ranking.length > 0) {
+    ranking.forEach(entry => {
+      rankingHTML += `<li>${entry.name} - ${entry.clicks || entry.score || entry.time}</li>`;
+    });
+  } else {
+    rankingHTML += `<li>No hay puntajes aún</li>`;
+  }
+
+  rankingHTML += `</ul>`;
+  return rankingHTML;
+}
+
+
+function handleGame1Loss(clicks, secondsElapsed) {
+  Swal.fire({
+    title: '¡Has ganado!',
+    text: 'Ingresa tu nombre para guardar tu puntaje:',
+    input: 'text',
+    showCancelButton: true,
+    confirmButtonText: 'Guardar',
+    showLoaderOnConfirm: true,
+    preConfirm: (name) => {
+      if (name) {
+        const game1Ranking = JSON.parse(localStorage.getItem("game1Ranking")) || [];
+
+
+        const score = clicks;
+        const time = secondsElapsed; 
+
+        game1Ranking.push({ name, clicks: score, time })
+        localStorage.setItem("game1Ranking", JSON.stringify(game1Ranking));
+        return { name, score, time };
+      }
+    },
+    allowOutsideClick: () => !Swal.isLoading()
+  }).then((result) => {
+    if (result.value) {
+      console.log(`¡Hola, ${result.value.name}! Tu puntaje en el Juego 1 es: ${result.value.score} y tiempo: ${result.value.time} segundos.`);
+    }
+  });
+}
+
+function handleGame2Loss() {
+  Swal.fire({
+    title: '¡Has perdido!',
+    text: 'Ingresa tu nombre para guardar tu puntaje:',
+    input: 'text',
+    showCancelButton: true,
+    confirmButtonText: 'Guardar',
+    showLoaderOnConfirm: true,
+    preConfirm: (name) => {
+      if (name) {
+        const game2Ranking = JSON.parse(localStorage.getItem("game2Ranking")) || [];
+        game2Ranking.push({ name, score: player.score - 2 });
+        localStorage.setItem("game2Ranking", JSON.stringify(game2Ranking));
+        return { name, score: player.score };
+      }
+    },
+    allowOutsideClick: () => !Swal.isLoading()
+  }).then((result) => {
+    if (result.value) {
+      console.log(`¡Hola, ${result.value.name}! Tu puntaje en el Juego 2 es: ${result.value.score}.`);
+    }
+  });
+}
