@@ -2,7 +2,9 @@
 const apartadoPj = document.getElementById("apartadoPj");
 apartadoPj.style.display = "none";
 
-/* PRIMER JUEGO */
+
+
+/* GLOBAL VARIABLES FIRST GAME */
 const firstGame = document.getElementById("firstGame");
 const distance = document.getElementById("distance");
 let treasureSound = new Audio("./assets/sounds/treasure.mp3");
@@ -15,17 +17,25 @@ let target = {
 let $firstGame = document.querySelector("#firstGame");
 let $distance = document.querySelector("#distance");
 let clicks = -1;
-
 let timerInterval;
 let secondsElapsed = 0;
 const timeElapsedElement = document.getElementById("timeElapsed");
 
+
+
+/* GLOBAL VARIABLES SECOND GAME */
 const secondGame = document.getElementById("secondGame");
 const rankingContainer = document.getElementById("rankingContainer");
-
 const contenedorVideo = document.getElementById("contenedorVideo");
 const videoElement = document.querySelector("#video");
 
+
+
+/* ---------------------------------------------------- */
+
+
+
+/* Boton para abrir el apartado de seleccion de personaje */
 document.getElementById("btnPj").addEventListener("click", function() {
     restartSecondGame();
     rankingContainer.style.display = "none"
@@ -43,12 +53,14 @@ document.getElementById("btnPj").addEventListener("click", function() {
     };
     $distance.innerHTML =
         "Debes buscar al Hollin Viajero!! (Haz click para comenzar)";
-
     treasureSound.currentTime = 0;
     treasureSound.pause();
     endGame()
 });
 
+
+
+/* Boton para cerrar el apartado de seleccion de personaje */
 document.getElementById("btnNonPj").addEventListener("click", function() {
     restartSecondGame();
     apartadoPj.style.display = "none";
@@ -59,19 +71,25 @@ document.getElementById("btnNonPj").addEventListener("click", function() {
     contenedorVideo.style.display = "none";
     videoElement.src =
         "https://www.youtube.com/embed/FsUDoAgduBQ?si=uTFhaTazmb1q0wTL";
-
     treasureSound.currentTime = 0;
     treasureSound.pause();
     endGame()
 });
 
+
+
+/* DEFINIMOS UN PERSONAJE DESDE EL COMIENZO DEL JUEGO */
 if (typeof Storage !== "undefined") {
     sessionStorage.setItem("personaje", "Child");
     console.log("Personaje Child inicializado en sessionStorage");
 } else {
     console.log("El navegador no es compatible con sessionStorage");
 }
+/* ---------------------------------------------------- */
 
+
+
+/* Boton para seleccionar a 'totoro' como personaje */
 document.getElementById("btnPjTotoro").addEventListener("click", function() {
     sessionStorage.setItem("personaje", "Totoro");
     treasureSound.currentTime = 0;
@@ -87,6 +105,9 @@ document.getElementById("btnPjTotoro").addEventListener("click", function() {
     secondGame.style.display = "none";
 });
 
+
+
+/* Boton para seleccionar a 'child' como personaje */
 document.getElementById("btnPjChild").addEventListener("click", function() {
     sessionStorage.setItem("personaje", "Child");
 
@@ -105,7 +126,12 @@ document.getElementById("btnPjChild").addEventListener("click", function() {
 });
 
 
-const btnCerrarVideo = document.getElementById("btnCerrarVideo");
+
+/* ---------------------------------------------------- */
+
+
+
+/* Boton para abrir los creditos */
 document.getElementById("btnAbrirVideo").addEventListener("click", function() {
     contenedorVideo.style.display = "block";
     rankingContainer.style.display = "none"
@@ -114,7 +140,10 @@ document.getElementById("btnAbrirVideo").addEventListener("click", function() {
     apartadoPj.style.display = "none";
 });
 
-btnCerrarVideo.addEventListener("click", function() {
+
+
+/* Boton para cerrar los creditos */
+document.getElementById("btnCerrarVideo").addEventListener("click", function() {
     videoElement.src =
         "https://www.youtube.com/embed/FsUDoAgduBQ?si=uTFhaTazmb1q0wTL";
 
@@ -122,9 +151,14 @@ btnCerrarVideo.addEventListener("click", function() {
     rankingContainer.style.display = "none"
 });
 
-const btnJugar = document.getElementById("btnJugar");
 
-btnJugar.addEventListener("click", function() {
+
+/* ---------------------------------------------------- */
+
+
+
+/* Boton para jugar uno de los 2 juegos según el personaje seleccionado */
+document.getElementById("btnJugar").addEventListener("click", function() {
     restartSecondGame();
     rankingContainer.style.display = "none"
     contenedorVideo.style.display = "none";
@@ -153,7 +187,13 @@ btnJugar.addEventListener("click", function() {
     }
 });
 
-/* GAME 1 */
+
+
+/* ---------------------------------------------------- */
+
+
+
+/* FIRST GAME */
 $firstGame.addEventListener("click", function(e) {
     let distance = getDistance(e, target);
     if ((clicks == -1) & (distance > 20)) {
@@ -180,27 +220,19 @@ $firstGame.addEventListener("click", function(e) {
 
         treasureSound.pause();
         Swal.fire(`Encontraste al Hollin Viajero en ${clicks} clicks!`);
-
-        /* alert("clicks: " + clicks + " segundos: " + secondsElapsed) */
-
         handleGame1Loss(clicks, secondsElapsed);
 
         const targetX = target.x;
         const targetY = target.y;
-
         const treasureImage = document.getElementById("treasureImage");
+
         treasureImage.style.display = "block";
         treasureImage.style.left = targetX - 17 + "px";
         treasureImage.style.top = targetY - 17 + "px";
-
-
-
         clearInterval(timerInterval);
         secondsElapsed = 0;
         timeElapsedElement.textContent = `Tiempo transcurrido: ${secondsElapsed} segundos`;
-
         clicks = -1;
-
 
         document.getElementById("clickCount").textContent = `Clicks: 0`;
 
@@ -213,6 +245,9 @@ $firstGame.addEventListener("click", function(e) {
     }
 });
 
+
+
+/* Establece el volumen según la distancia del toque */
 function getVolume(distance) {
     const maxDistance = 360;
     const minDistance = 30;
@@ -232,6 +267,9 @@ function getVolume(distance) {
     }
 }
 
+
+
+/* Inicializa el tiempo */
 function startTimer() {
     timerInterval = setInterval(function() {
         secondsElapsed++;
@@ -239,14 +277,24 @@ function startTimer() {
     }, 1000);
 }
 
-/* SEGUNDO JUEGO */
 
+
+/* ---------------------------------------------------- */
+
+
+
+/* SECOND GAME */
 const score = document.querySelector('.score');
 const startScreen = document.querySelector('.startScreen');
 const gameArea = document.querySelector('.gameArea');
-startScreen.addEventListener('click', start);
 let player = { speed: 15, score: 0 };
 let keys = { ArrowUp: false, ArrowDown: false, ArrowLeft: false, ArrowRight: false }
+
+
+
+startScreen.addEventListener('click', start);
+
+
 
 document.addEventListener('keydown', keyDown);
 document.addEventListener('keyup', keyUp);
@@ -261,12 +309,18 @@ function keyUp(e) {
     keys[e.key] = false;
 }
 
+
+
+/* Determina si un elemento toca a otro y establece una colision */
 function isCollide(a, b) {
     aRect = a.getBoundingClientRect();
     bRect = b.getBoundingClientRect();
     return !((aRect.bottom < bRect.top) || (aRect.top > bRect.bottom) || (aRect.right < bRect.left) || (aRect.left > bRect.right))
 }
 
+
+
+/* Genera el movimiento del mapa */
 function moveLines() {
     let lines = document.querySelectorAll('.lines');
     lines.forEach(function(item) {
@@ -278,6 +332,9 @@ function moveLines() {
     })
 }
 
+
+
+/* Finaliza el juego */
 function endGame() {
     player.start = false;
     startScreen.classList.remove('hide');
@@ -285,6 +342,9 @@ function endGame() {
     enableMouseWheel();
 }
 
+
+
+/* Establece la ruta de los enemigos */
 function moveEnemy(car) {
     let enemy = document.querySelectorAll('.enemy');
     enemy.forEach(function(item) {
@@ -302,15 +362,15 @@ function moveEnemy(car) {
     })
 }
 
-function gamePlay() {
 
+
+/* Movimiento del personaje a lo largo del mapa */
+function gamePlay() {
     let car = document.querySelector('.car');
     let road = gameArea.getBoundingClientRect();
     if (player.start) {
         moveLines();
         moveEnemy(car);
-
-
         if (keys.ArrowLeft && player.x > 0) {
             player.x -= player.speed
         }
@@ -327,6 +387,9 @@ function gamePlay() {
     }
 }
 
+
+
+/* Lógica de spawn de los enemigos e inicializacion de variables*/
 function start() {
     disableMouseWheel();
     startScreen.classList.add('hide');
@@ -346,11 +409,8 @@ function start() {
     let car = document.createElement('div');
     car.setAttribute('class', 'car');
     gameArea.appendChild(car);
-
     player.x = car.offsetLeft;
-
-
-    for (x = 0; x < 3; x++) {
+    for (x = 0; x < 4; x++) {
         let enemyCar = document.createElement('div');
         enemyCar.setAttribute('class', 'enemy');
         enemyCar.y = ((x + 1) * 350) * -1;
@@ -359,9 +419,11 @@ function start() {
         enemyCar.style.left = Math.floor(Math.random() * 350) + "px";
         gameArea.appendChild(enemyCar);
     }
-
 }
 
+
+
+/* Genera coloeres aleatorios para los autos que vienen de frente */
 function randomColor() {
     function c() {
         let hex = Math.floor(Math.random() * 256).toString(16);
@@ -370,6 +432,9 @@ function randomColor() {
     return "#" + c() + c() + c();
 }
 
+
+
+/* Desactiva la rueda del mouse para para evitar movimientos repentinos */
 function disableMouseWheel() {
     if (window.addEventListener) {
         window.addEventListener('wheel', preventDefault, { passive: false });
@@ -378,6 +443,9 @@ function disableMouseWheel() {
     }
 }
 
+
+
+/* Activa la rueda del mouse al finalizar una partida*/
 function enableMouseWheel() {
     if (window.removeEventListener) {
         window.removeEventListener('wheel', preventDefault, { passive: false });
@@ -386,14 +454,19 @@ function enableMouseWheel() {
     }
 }
 
+
+
+/* Previene el comportamiento default de ciertas acciones y eventos */
 function preventDefault(e) {
     e = e || window.event;
     if (e.preventDefault) e.preventDefault();
     e.returnValue = false;
 }
 
-function restartSecondGame() {
 
+
+/* Restaura los valores por defecto del segundo juego */
+function restartSecondGame() {
     player.start = false;
     startScreen.classList.remove('hide');
     startScreen.innerHTML = "<p>Presione aquí para comenzar<br> Si chocas pierdes ...</p>";
@@ -403,14 +476,16 @@ function restartSecondGame() {
     enableMouseWheel();
 }
 
-document.getElementById("btnMostrarRankings").addEventListener("click", function() {
 
+
+/* Boton para mostrar los rankings del juego 1 y del juego 2 */
+document.getElementById("btnMostrarRankings").addEventListener("click", function() {
+    
     rankingContainer.style.display = "flex"
     rankingContainer.style.alignContent = "center"
     rankingContainer.style.alignItems = "center"
     rankingContainer.style.justifyContent = "center"
     rankingContainer.style.flexDirection = "column"
-
     firstGame.style.display = "none";
     secondGame.style.display = "none";
     apartadoPj.style.display = "none";
@@ -421,11 +496,13 @@ document.getElementById("btnMostrarRankings").addEventListener("click", function
     showRankings();
 });
 
+/* Establece la manera en que se van a ver los rankings de ambos juegos */
 function showRankings() {
-
-
     let game1Ranking = JSON.parse(localStorage.getItem("game1Ranking")) || [];
     let game2Ranking = JSON.parse(localStorage.getItem("game2Ranking")) || [];
+    const game1HTML = generateRankingHTML(game1Ranking, "Game 1 Ranking");
+    const game2HTML = generateRankingHTML(game2Ranking, "Game 2 Ranking");
+    const btnCerrarRankings = document.getElementById("btnCerrarRankings");
 
     game1Ranking = game1Ranking.sort((a, b) => {
         if (a.clicks === b.clicks) {
@@ -436,13 +513,7 @@ function showRankings() {
     });
 
     game2Ranking = game2Ranking.sort((a, b) => b.score - a.score);
-
-    const game1HTML = generateRankingHTML(game1Ranking, "Game 1 Ranking");
-    const game2HTML = generateRankingHTML(game2Ranking, "Game 2 Ranking");
-
     rankingContainer.innerHTML = game1HTML + game2HTML;
-
-    const btnCerrarRankings = document.getElementById("btnCerrarRankings");
 
     if (!btnCerrarRankings) {
         const newBtnCerrarRankings = document.createElement("button");
@@ -464,6 +535,7 @@ function showRankings() {
 
 
 
+/* Genera el html de los rankings en el caso de que existan */
 function generateRankingHTML(ranking, title) {
     let rankingHTML = `<h3>${title}</h3><ul>`;
 
@@ -480,6 +552,8 @@ function generateRankingHTML(ranking, title) {
 }
 
 
+
+/* Guarda el puntaje del primer juego al finalizar */
 function handleGame1Loss(clicks, secondsElapsed) {
     Swal.fire({
         title: '¡Has ganado!',
@@ -509,6 +583,9 @@ function handleGame1Loss(clicks, secondsElapsed) {
     });
 }
 
+
+
+/* Guarda el puntaje del segundo juego al finalizar */
 function handleGame2Loss() {
     Swal.fire({
         title: '¡Has perdido!',
