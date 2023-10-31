@@ -2,6 +2,7 @@
 const apartadoPj = document.getElementById("apartadoPj");
 apartadoPj.style.display = "none";
 
+const containerMenu = document.getElementById("menu");
 
 
 /* GLOBAL VARIABLES FIRST GAME */
@@ -160,7 +161,8 @@ document.getElementById("btnCerrarVideo").addEventListener("click", function() {
 /* Boton para jugar uno de los 2 juegos según el personaje seleccionado */
 document.getElementById("btnJugar").addEventListener("click", function() {
     restartSecondGame();
-    rankingContainer.style.display = "none"
+    containerMenu.style.display = "none";
+    rankingContainer.style.display = "none";
     contenedorVideo.style.display = "none";
     videoElement.src =
         "https://www.youtube.com/embed/FsUDoAgduBQ?si=uTFhaTazmb1q0wTL";
@@ -410,7 +412,7 @@ function start() {
     car.setAttribute('class', 'car');
     gameArea.appendChild(car);
     player.x = car.offsetLeft;
-    for (x = 0; x < 4; x++) {
+    for (x = 0; x < 3; x++) {
         let enemyCar = document.createElement('div');
         enemyCar.setAttribute('class', 'enemy');
         enemyCar.y = ((x + 1) * 350) * -1;
@@ -480,7 +482,7 @@ function restartSecondGame() {
 
 /* Boton para mostrar los rankings del juego 1 y del juego 2 */
 document.getElementById("btnMostrarRankings").addEventListener("click", function() {
-    
+
     rankingContainer.style.display = "flex"
     rankingContainer.style.alignContent = "center"
     rankingContainer.style.alignItems = "center"
@@ -572,15 +574,21 @@ function handleGame1Loss(clicks, secondsElapsed) {
 
                 game1Ranking.push({ name, clicks: score, time })
                 localStorage.setItem("game1Ranking", JSON.stringify(game1Ranking));
+
                 return { name, score, time };
+
             }
         },
         allowOutsideClick: () => !Swal.isLoading()
     }).then((result) => {
         if (result.value) {
             console.log(`¡Hola, ${result.value.name}! Tu puntaje en el Juego 1 es: ${result.value.score} y tiempo: ${result.value.time} segundos.`);
+
         }
+        VolverAlMenu()
     });
+
+
 }
 
 
@@ -599,6 +607,7 @@ function handleGame2Loss() {
                 const game2Ranking = JSON.parse(localStorage.getItem("game2Ranking")) || [];
                 game2Ranking.push({ name, score: player.score - 2 });
                 localStorage.setItem("game2Ranking", JSON.stringify(game2Ranking));
+
                 return { name, score: player.score };
             }
         },
@@ -607,5 +616,37 @@ function handleGame2Loss() {
         if (result.value) {
             console.log(`¡Hola, ${result.value.name}! Tu puntaje en el Juego 2 es: ${result.value.score}.`);
         }
+        VolverAlMenu()
     });
+
+
+
 }
+
+
+
+
+
+
+
+function VolverAlMenu() {
+    Swal.fire({
+        title: 'Desea volver al menu?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: "Volver a jugar",
+        confirmButtonText: 'Sí, deseo volver'
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+            containerMenu.style.display = "flex"
+            firstGame.style.display = "none"
+            secondGame.style.display = "none"
+
+        }
+    })
+}
+
+/* containerMenu.style.display = "flex" */
